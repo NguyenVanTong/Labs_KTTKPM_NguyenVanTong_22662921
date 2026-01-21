@@ -63,7 +63,7 @@ class UserLogger {
     }
 }
 
-// Manager class orchestrate các services
+// Manager class orchestrates các services
 class UserManagerGood {
     private UserValidator validator;
     private UserRepository repository;

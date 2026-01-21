@@ -29,7 +29,7 @@ class Student {
     
     @Override
     public String toString() {
-        return "Student[ID=" + id + ", Name=" + name + ", GPA=" + String.format("%.2f", gpa) + "]";
+        return String.format("Student[ID=%s, Name=%s, GPA=%.2f]", id, name, gpa);
     }
 }
 
