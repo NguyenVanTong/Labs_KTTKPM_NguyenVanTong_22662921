@@ -1,0 +1,34 @@
+@startuml SingletonPattern
+
+!theme plain
+
+title Singleton Design Pattern - Bill Pugh Singleton
+
+package "iuh.fit.singleton" {
+    class LoggerSingleton {
+        - LoggerSingleton()
+        + getInstance(): LoggerSingleton {static}
+        + log(message: String): void
+        {inner class}
+        Helper
+        - INSTANCE: LoggerSingleton {static, final}
+    }
+}
+
+package "iuh.fit" {
+    class Main {
+        + main(args: String[]): void {static}
+    }
+}
+
+Main ..> LoggerSingleton: uses
+
+note right of LoggerSingleton
+    Bill Pugh Singleton Pattern:
+    - Private constructor prevents instantiation
+    - Static inner class holds the instance
+    - Instance created only when getInstance() is first called
+    - Thread-safe due to class loader mechanism
+end note
+
+@enduml

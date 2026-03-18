@@ -1,0 +1,71 @@
+@startuml
+
+package "state" {
+    class Order {
+        - state: OrderState
+        + setState(state: OrderState)
+        + process()
+    }
+
+    interface OrderState {
+        + handle(order: Order)
+    }
+
+    class NewState
+    class ProcessingState
+    class DeliveredState
+    class CancelledState
+
+    Order --> OrderState
+
+    OrderState <|.. NewState
+    OrderState <|.. ProcessingState
+    OrderState <|.. DeliveredState
+    OrderState <|.. CancelledState
+}
+
+package "strategy" {
+    interface PaymentStrategy {
+        + pay()
+    }
+
+    class CreditCardPayment
+    class PaypalPayment
+
+    PaymentStrategy <|.. CreditCardPayment
+    PaymentStrategy <|.. PaypalPayment
+}
+
+package "decorator" {
+    interface OrderService {
+        + process()
+    }
+
+    class BasicOrderService
+
+    abstract class OrderDecorator {
+        - service: OrderService
+        + process()
+    }
+
+    class LoggingDecorator
+    class DiscountDecorator
+
+    OrderService <|.. BasicOrderService
+    OrderService <|.. OrderDecorator
+
+    OrderDecorator --> OrderService
+
+    OrderDecorator <|-- LoggingDecorator
+    OrderDecorator <|-- DiscountDecorator
+}
+
+class Main {
+    + main()
+}
+
+Main --> Order
+Main --> PaymentStrategy
+Main --> OrderService
+
+@enduml

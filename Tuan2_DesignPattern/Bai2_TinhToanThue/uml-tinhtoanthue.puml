@@ -1,0 +1,77 @@
+@startuml
+
+title Tax Calculation System - State + Strategy + Decorator
+
+package "state" {
+
+    class Product {
+        - state: ProductState
+        - strategy: TaxStrategy
+        + setState(state: ProductState)
+        + setStrategy(strategy: TaxStrategy)
+        + processTax(): double
+    }
+
+    interface ProductState {
+        + handle(product: Product)
+    }
+
+    class NormalState
+    class TaxFreeState
+    class LuxuryState
+
+    Product --> ProductState
+    ProductState <|.. NormalState
+    ProductState <|.. TaxFreeState
+    ProductState <|.. LuxuryState
+}
+
+package "strategy" {
+
+    interface TaxStrategy {
+        + calculate(price: double): double
+    }
+
+    class VATStrategy
+    class ConsumptionTaxStrategy
+    class LuxuryTaxStrategy
+
+    TaxStrategy <|.. VATStrategy
+    TaxStrategy <|.. ConsumptionTaxStrategy
+    TaxStrategy <|.. LuxuryTaxStrategy
+}
+
+package "decorator" {
+
+    interface TaxCalculator {
+        + calculate(price: double): double
+    }
+
+    class BasicTaxCalculator
+
+    abstract class TaxDecorator {
+        - calculator: TaxCalculator
+        + calculate(price: double): double
+    }
+
+    class LoggingDecorator
+    class DiscountDecorator
+
+    TaxCalculator <|.. BasicTaxCalculator
+    TaxCalculator <|.. TaxDecorator
+
+    TaxDecorator --> TaxCalculator
+
+    TaxDecorator <|-- LoggingDecorator
+    TaxDecorator <|-- DiscountDecorator
+}
+
+class Main {
+    + main()
+}
+
+Main --> Product
+Main --> TaxStrategy
+Main --> TaxCalculator
+
+@enduml
